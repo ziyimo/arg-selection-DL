@@ -8,8 +8,11 @@ def bidirectional_LSTM():
   W = 13 # of windows
   In = Input(shape=(W, 3*K))
 
-  x = Bidirectional(LSTM(256, dropout=0.1, recurrent_dropout=0.1, return_sequences=True))(In)
-  x = Bidirectional(LSTM(128, recurrent_dropout=0.1))(x)
+  x = Bidirectional(LSTM(256, dropout=0.1, recurrent_dropout=0,
+                         kernel_regularizer=l2(l=1e-6), recurrent_regularizer=l2(l=1e-6),
+                         return_sequences=True))(In)
+  x = Bidirectional(LSTM(128, kernel_regularizer=l2(l=1e-6), recurrent_regularizer=l2(l=1e-6),
+                         recurrent_dropout=0))(x)
   x = Dense(128, use_bias=False)(x)
   x = BatchNormalization()(x)
   x = Activation("relu")(x)
